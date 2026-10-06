@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <meta name="author" content="Yasmin Bez Fontana">
+        
+        <link rel="shortcut icon" href="../img/favicon.ico">
+        <title>Delta Lake - Delta Lake e Apache Iceberg com PySpark</title>
+        <link href="../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../css/fontawesome.min.css" rel="stylesheet">
+        <link href="../css/brands.min.css" rel="stylesheet">
+        <link href="../css/solid.min.css" rel="stylesheet">
+        <link href="../css/v4-font-face.min.css" rel="stylesheet">
+        <link href="../css/base.css" rel="stylesheet">
+        <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" >
+        <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" disabled>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="..">Delta Lake e Apache Iceberg com PySpark</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li class="nav-item">
+                                <a href=".." class="nav-link">Contextualização</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="../spark/" class="nav-link">Apache Spark e PySpark</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="../iceberg/" class="nav-link">Apache Iceberg</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="./" class="nav-link active" aria-current="page">Delta Lake</a>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav ms-md-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" href="../iceberg/" class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" class="nav-link disabled">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="https://github.com/bfontanayasmin/trabalhoBancodeDados/edit/master/docs/delta.md" class="nav-link"><i class="fa-brands fa-github"></i> Edit on GitHub</a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-bs-level="1"><a href="#delta-lake" class="nav-link">Delta Lake</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-bs-level="2"><a href="#o-que-e" class="nav-link">O que é</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#uso-no-projeto" class="nav-link">Uso no projeto</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#criacao-das-tabelas-ddl" class="nav-link">Criação das tabelas — DDL</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#insercao-insert" class="nav-link">Inserção — INSERT</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#atualizacao-update" class="nav-link">Atualização — UPDATE</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#exclusao-delete" class="nav-link">Exclusão — DELETE</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#consulta-dos-resultados" class="nav-link">Consulta dos resultados</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#repeticao-do-exemplo" class="nav-link">Repetição do exemplo</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#referencias" class="nav-link">Referências</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<h1 id="delta-lake">Delta Lake</h1>
+<h2 id="o-que-e">O que é</h2>
+<p>Delta Lake é um formato de tabela que acrescenta controle de transações
+ao armazenamento de dados.</p>
+<p>Os registros ficam em arquivos Parquet. Um registro de transações,
+armazenado na pasta _delta_log, controla quais arquivos fazem parte
+da versão atual da tabela.</p>
+<p>Esse controle permite realizar alterações de forma consistente
+e manter o histórico das versões da tabela.</p>
+<h2 id="uso-no-projeto">Uso no projeto</h2>
+<p>Utilizamos Delta Lake 3.2.0 com PySpark 3.5.3.</p>
+<p>O notebook delta_lake.ipynb configura a extensão DeltaSparkSessionExtension
+e o catálogo DeltaCatalog. O processamento é executado localmente.</p>
+<p>As tabelas são categorias e produtos, agrupadas no namespace loja_delta.
+Seus arquivos ficam na pasta data/delta.</p>
+<h2 id="criacao-das-tabelas-ddl">Criação das tabelas — DDL</h2>
+<p>O notebook prepara a variável pasta_delta com o caminho absoluto
+da pasta data/delta. Em seguida, executa:</p>
+<pre><code class="language-python">spark.sql(f&quot;&quot;&quot;
+    CREATE DATABASE IF NOT EXISTS loja_delta
+    LOCATION '{pasta_delta.as_posix()}'
+&quot;&quot;&quot;)
+
+spark.sql(f&quot;&quot;&quot;
+    CREATE OR REPLACE TABLE loja_delta.categorias (
+        id_categoria INT,
+        nome_categoria STRING
+    )
+    USING DELTA
+    LOCATION '{(pasta_delta / &quot;categorias&quot;).as_posix()}'
+&quot;&quot;&quot;)
+
+spark.sql(f&quot;&quot;&quot;
+    CREATE OR REPLACE TABLE loja_delta.produtos (
+        id_produto INT,
+        nome_produto STRING,
+        preco DECIMAL(10,2),
+        estoque INT,
+        id_categoria INT
+    )
+    USING DELTA
+    LOCATION '{(pasta_delta / &quot;produtos&quot;).as_posix()}'
+&quot;&quot;&quot;)
+</code></pre>
+<p>USING DELTA define o formato das tabelas. LOCATION indica onde seus
+arquivos serão armazenados.</p>
+<p>CREATE OR REPLACE TABLE permite criar ou substituir a tabela.
+Neste exemplo, começamos com tabelas vazias.</p>
+<h2 id="insercao-insert">Inserção — INSERT</h2>
+<p>INSERT INTO adiciona registros. Após criar as tabelas, cadastramos
+duas categorias e dez produtos fictícios:</p>
+<pre><code class="language-sql">INSERT INTO loja_delta.categorias
+    (id_categoria, nome_categoria)
+VALUES
+    (1, 'Informática'),
+    (2, 'Papelaria');
+
+INSERT INTO loja_delta.produtos
+    (id_produto, nome_produto, preco, estoque, id_categoria)
+VALUES
+    (1, 'Mouse', 49.90, 20, 1),
+    (2, 'Teclado', 120.00, 10, 1),
+    (3, 'Caderno', 19.90, 30, 2),
+    (4, 'Caneta', 3.50, 100, 2),
+    (5, 'Headset', 199.90, 12, 1),
+    (6, 'Webcam', 149.90, 8, 1),
+    (7, 'Pendrive', 39.90, 25, 1),
+    (8, 'Lapiseira', 9.90, 40, 2),
+    (9, 'Borracha', 2.50, 60, 2),
+    (10, 'Marcador', 6.90, 35, 2);
+</code></pre>
+<p>A lista de campos indica a posição de cada valor. O campo id_categoria
+associa cada produto à sua categoria.</p>
+<h2 id="atualizacao-update">Atualização — UPDATE</h2>
+<p>UPDATE modifica registros existentes. SET define os novos valores,
+e WHERE seleciona os registros que serão alterados:</p>
+<pre><code class="language-sql">UPDATE loja_delta.produtos
+SET preco = 59.90,
+    estoque = 15
+WHERE id_produto = 1;
+</code></pre>
+<p>O Mouse passa a ter preço de R$ 59,90 e estoque de 15 unidades.
+Os demais produtos mantêm seus valores.</p>
+<h2 id="exclusao-delete">Exclusão — DELETE</h2>
+<p>DELETE FROM remove registros da versão atual da tabela:</p>
+<pre><code class="language-sql">DELETE FROM loja_delta.produtos
+WHERE id_produto = 4;
+</code></pre>
+<p>A condição seleciona a Caneta. Após a operação, permanecem nove produtos.</p>
+<p>Essa exclusão lógica não significa a remoção imediata de todos os
+arquivos físicos relacionados às versões anteriores da tabela.</p>
+<h2 id="consulta-dos-resultados">Consulta dos resultados</h2>
+<p>No notebook, os comandos SQL são executados usando spark.sql.
+As consultas antes e depois permitem conferir cada alteração:</p>
+<pre><code class="language-python">spark.sql(&quot;&quot;&quot;
+    SELECT * FROM loja_delta.produtos
+    ORDER BY id_produto
+&quot;&quot;&quot;).show()
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>Etapa</th>
+<th>Resultado esperado</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Antes do INSERT</td>
+<td>Tabelas vazias.</td>
+</tr>
+<tr>
+<td>Depois do INSERT</td>
+<td>Duas categorias e dez produtos.</td>
+</tr>
+<tr>
+<td>Depois do UPDATE</td>
+<td>Dez produtos; Mouse com preço 59.90 e estoque 15.</td>
+</tr>
+<tr>
+<td>Depois do DELETE</td>
+<td>Nove produtos; Caneta removida.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="repeticao-do-exemplo">Repetição do exemplo</h2>
+<p>A célula de limpeza do notebook remove o banco loja_delta e os arquivos
+em data/delta, incluindo o histórico do exemplo anterior.</p>
+<p>Para repetir a demonstração, executamos o notebook inteiro desde
+o início, usando Restart Kernel and Run All Cells.</p>
+<h2 id="referencias">Referências</h2>
+<ul>
+<li><a href="https://docs.delta.io/quick-start/">Introdução ao Delta Lake</a></li>
+<li><a href="https://docs.delta.io/delta-batch/">Criação e manipulação de tabelas</a></li>
+<li><a href="https://docs.delta.io/delta-update/">Atualização e exclusão de registros</a></li>
+</ul></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script src="../js/bootstrap.bundle.min.js"></script>
+        <script>
+            var base_url = "..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../js/base.js"></script>
+        <script src="../search/main.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>From here you can search these documents. Enter your search terms below.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>
