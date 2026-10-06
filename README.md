@@ -139,3 +139,8 @@ O comando publica os arquivos gerados na branch `gh-pages`. Nas configurações 
 - [Delta Lake](https://docs.delta.io/)
 - [Apache Iceberg](https://iceberg.apache.org/)
 - [MkDocs](https://www.mkdocs.org/)
+
+## Documentação publicada
+
+As quatro páginas da documentação estão disponíveis em:
+https://bfontanayasmin.github.io/trabalhoBancodeDados/
