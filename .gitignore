@@ -1,0 +1,16 @@
+
+# Ambiente virtual e arquivos temporários
+.venv/
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+
+# Arquivos gerados pelo Spark
+/data/delta/
+/data/iceberg/
+/spark-warehouse/
+/metastore_db/
+derby.log
+
+# Site gerado pelo MkDocs
+/site/

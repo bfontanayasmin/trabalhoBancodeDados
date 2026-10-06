@@ -1,0 +1,12 @@
+site_name: "Delta Lake e Apache Iceberg com PySpark"
+site_author: "Yasmin Bez Fontana"
+repo_url: "https://github.com/bfontanayasmin/trabalhoBancodeDados"
+
+theme:
+  name: mkdocs
+
+nav:
+  - Contextualização: index.md
+  - Apache Spark e PySpark: spark.md
+  - Apache Iceberg: iceberg.md
+  - Delta Lake: delta.md
